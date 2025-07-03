@@ -11,12 +11,12 @@ ___
 - Entregar os códigos, juntamente com um vídeo (ou link para o vídeo) demonstrando o funcionamento.
 ___
 ## System Design
-<img width="1444" alt="shapes at 25-06-30 01 57 13" src="https://github.com/user-attachments/assets/63e37054-6424-43a1-a330-dc20b48b885d" />
+<img width="1444" alt="Sistemas Operacionais" src="https://github.com/user-attachments/assets/05c380a7-92f2-4cb2-a68e-9119d14af2af" />
 
 ___
 ## Aplicação Finfood
+![Screenshot from 2025-06-30 01-21-57](https://github.com/user-attachments/assets/a98f4949-e6cb-42bd-993b-fdbad435b480)
 
-![image](https://github.com/user-attachments/assets/3d28028b-bf90-443c-9792-bfca841fa311)
 ___
 Esta configuração utiliza containers Apache separados para o backend (Laravel) e o frontend (Vue.js), proporcionando uma arquitetura robusta e com separação de responsabilidades.
 ___
