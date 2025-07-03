@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # Serviço do Banco de Dados
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Serviço do Backend (Laravel com Apache)
+  backend:
+    build:
+      context: ./backend-apache
+      args:
+        GITHUB_REPO_URL: https://github.com/williamtrindade/college-project-restaurant-management-system.git
+    container_name: apache_backend_app
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - ./backend-logs:/var/log/apache2
+    environment:
+      APP_ENV: ${APP_ENV}
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      APP_KEY: ${APP_KEY}
+      FRONTEND_TOKEN: ${APP_TOKEN}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # Serviço do Frontend (Vue.js com Apache)
+  frontend:
+    build:
+      context: ./frontend-apache
+      args:
+        GITHUB_REPO_URL: https://github.com/williamtrindade/college-project-restaurant-management-system.git
+        APP_TOKEN: ${APP_TOKEN}
+        VUE_APP_API_URL: ${VUE_APP_API_URL}
+    container_name: apache_frontend_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend-logs:/usr/local/apache2/logs
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
